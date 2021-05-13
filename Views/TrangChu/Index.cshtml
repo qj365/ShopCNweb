@@ -1,0 +1,13 @@
+﻿
+@{
+    if (Session["username"] == null)
+    {
+        Response.Redirect("~/Login/Login");
+    }
+
+    ViewBag.Title = "Trang chủ";
+    Layout = "~/Views/Shared/_adminLTE.cshtml";
+}
+
+<h2>Index</h2>
+

@@ -1,0 +1,87 @@
+﻿
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_adminLTE.cshtml";
+}
+
+@using ShopCNweb.Models.Entities;
+@{
+    var product = (Products)ViewBag.pro;
+}
+
+<form action="Edit" method="post" role="form" enctype="multipart/form-data">
+    <input type="hidden" id="id" name="id" value="@product.ID" />
+    <div class="box box-default">
+        <div class="box-header with-border">
+            <h3 class="box-title">Chỉnh sửa </h3>
+
+            
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="name">Tên</label>
+                        <input type="text" name="name" class="form-control" id="name" placeholder="Tên sản phẩm" value="@product.NAME">
+                    </div>
+                    <!-- /.form-group -->
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Giá</label>
+                        <input type="text" class="form-control" name="price" id="price" placeholder="Enter email" value="@product.PRICE">
+                    </div>
+                </div>
+                <!-- /.col -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Số lượng</label>
+                        <input type="number" class="form-control" name="amount" id="amount" placeholder="Enter email" value="@product.AMOUNT">
+                    </div>
+                    <div class="form-group">
+                        <label>Loại sản phẩm</label>
+                        <select class="form-control" name="idcategory">
+                            @foreach (var item in ViewBag.cat)
+                            {
+
+                                var select = "";
+                                if (item.ID == product.IDCATEGORY)
+                                {
+                                    select = "selected";
+                                }
+                                <option @select value="@item.ID">@item.NAME</option>
+
+                            }
+                        </select>
+                    </div>
+                    <!-- /.form-group -->
+
+                </div>
+                <!-- /.col -->
+
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="form-group">
+                        <label for="exampleInputFile">Chọn ảnh</label>
+                        <input type="file" id="photo" name="photo">
+                        <p class="help-block"><img style="width:100px" src="~/Content/img/@product.PHOTO" /></p>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label>Mô tả</label>
+                        <textarea name="description" id="description" class="form-control" rows="3">@product.DESCRIPTION</textarea>
+                    </div>
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.box-body -->
+
+    </div>
+    <div class="box-footer">
+        <input type="submit" class="btn btn-primary" value="Sửa" />
+    </div>
+</form>

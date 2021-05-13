@@ -1,0 +1,147 @@
+﻿@model PagedList.IPagedList<ShopCNweb.Models.Entities.Products>
+
+@using PagedList.Mvc
+
+@using ShopCNweb.Models.Entities
+@using ShopCNweb.Dao
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_adminLTE.cshtml";
+    IEnumerable<Category> cate = ViewData["cate"] as IEnumerable<Category>;
+}
+
+
+
+
+<!-- Page Heading -->
+<h1 class="h3 mb-2 text-gray-800">Danh sách sản phẩm</h1>
+
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive" style="overflow: hidden">
+            <div class="dataTables_wrapper dt-bootstrap4 no-footer" id="dataTable_wrapper">
+                <form class="row" action="List" style="margin-bottom:10px">
+                    <div class="col-sm-12 col-md-3" style="padding:0px 0px 0px 12px">
+                        
+                            <label>Hiển thị</label>
+                            <select name="pageSize" aria-controls="dataTable" style="width:auto" class="custom-select custom-select-sm form-control form-control-sm">
+                                <option value="3">3</option>
+                                <option value="5">5</option>
+                                <option value="15">15</option>
+                                <option value="30">30</option>
+                            </select>
+                            <label>sản phẩm</label>
+                        
+                    </div>
+                    <div class="col-sm-12 col-md-3" style="padding:0px">
+                        <label style="margin-right:5px">Loại sản phẩm  </label>
+                        <select name="idcategory" class="custom-select custom-select-sm form-control form-control-sm" style="width:50%">
+                            <option value="0">Tất cả</option>
+                            @foreach (var item in cate)
+                            {
+                                <option value="@item.ID">@item.NAME</option>
+                            }
+                        </select>
+
+                    </div>
+
+                    <div class="col-sm-12 col-md-3" style="padding:0px">
+                        <label style="margin-right:5px">Giá  </label>
+
+                        <input type="number" class="form-control" name="minp" id="minp" style="width:33%;display:inline" />
+
+                        <label>-</label>
+                        <input type="number" class="form-control" name="maxp" id="maxp" style="width:33%;display:inline" />
+
+                    </div>
+
+                    <div class="col-sm-12 col-md-3" style="padding:0px">
+                        <label>Tên</label>
+                        <input type="text" class="form-control" name="name" id="name" style="display:inline;width:55%"/>
+                        <button class="btn btn-flat btn-success" type="submit">
+                            Tìm kiếm
+                        </button>
+                    </div>
+
+                   
+
+                </form>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Tên sách</th>
+                                        <th>Giá</th>
+                                        <th>Số lượng</th>
+                                        <th>Mô tả</th>
+                                        <th>Ảnh</th>
+                                        <th>Loại sách</th>
+                                        <th>Chức năng</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ID)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.NAME)
+                                            </td>
+                                            <td style="text-align:right">
+                                                @Html.DisplayFor(modelItem => item.PRICE)
+                                            </td>
+                                            <td style="text-align:right">
+                                                @Html.DisplayFor(modelItem => item.AMOUNT)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.DESCRIPTION)
+                                            </td>
+                                            <td>
+                                                <img src="~/Content/img/@item.PHOTO" style="width:100px" />
+
+                                            </td>
+                                            <td>
+                                                @{
+                                                    ProductsDAO dao = new ProductsDAO();
+                                                    var category = dao.getCategoryname(item);
+                                                }
+                                                @category.NAME
+                                            </td>
+                                            <td>
+                                                <a href="~/TrangChu/Edit/@item.ID">
+                                                    <i class="far fa-edit" style="margin: 0px 10px;"></i>
+                                                </a>
+
+                                                <a href="~/TrangChu/Delete/@item.ID" onclick="return confirm('Bạn chắc chắn muốn xóa?')">
+                                                    <i class="far fa-trash-alt" style="margin: 0px 10px;"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-5"></div>
+                        <div class="col-sm-12 col-md-7" ">
+                            <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate" style="text-align:right">
+                                @Html.PagedListPager(Model, pageNum => Url.Action("List", new { pageNum })
+
+                           )
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
